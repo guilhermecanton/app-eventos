@@ -10,6 +10,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.Transient;
 import javax.validation.constraints.Size;
 
+import br.com.mixeventos.dao.MensagemDAO;
+
 @SuppressWarnings("serial")
 @Entity
 public class Usuario extends GenericDomain{	
@@ -97,7 +99,7 @@ public class Usuario extends GenericDomain{
 		this.tipoFormatado = tipoFormatado;
 	}
 	
-	public List<Mensagem> getMensagens() {
+	public List<Mensagem> getMensagens() {		
 		return mensagens;
 	}
 	public void setMensagens(List<Mensagem> mensagens) {

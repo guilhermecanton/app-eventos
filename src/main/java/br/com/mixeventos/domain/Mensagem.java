@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -31,6 +32,12 @@ public class Mensagem extends GenericDomain{
 	
 	@OneToOne
 	private Usuario destinatario;
+	
+	@Column
+	private Boolean msgLida;
+	
+	@Transient
+	private String msgLidaFormatada;
 	
 	
 	public String getAssunto() {
@@ -64,6 +71,25 @@ public class Mensagem extends GenericDomain{
 		this.destinatario = destinatario;
 	}
 
+	public Boolean getMsgLida() {
+		return msgLida;
+	}
 	
+	public void setMsgLida(Boolean msgLida) {
+		this.msgLida = msgLida;
+	}
+	
+	public String getMsgLidaFormatada() {
+		if(msgLida == true){
+			msgLidaFormatada = "Visualizada";
+		}else{
+			msgLidaFormatada = "Nova";
+		}
+		return msgLidaFormatada;
+	}
+	
+	public void setMsgLidaFormatada(String msgLidaFormatada) {
+		this.msgLidaFormatada = msgLidaFormatada;
+	}
 	
 }

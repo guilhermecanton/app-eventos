@@ -29,7 +29,7 @@ import br.com.mixeventos.domain.Ambiente;
 import br.com.mixeventos.domain.Categoria;
 import br.com.mixeventos.domain.Evento;
 import br.com.mixeventos.domain.TipoCategoria;
-import br.com.mixeventos.util.AutenticacaoListener;
+import br.com.mixeventos.util.PageListener;
 
 @SuppressWarnings("serial")
 @ManagedBean
@@ -53,8 +53,8 @@ public class EventoBean implements Serializable {
 	@PostConstruct
 	public void inicializar() {
 
-		AutenticacaoListener al = new AutenticacaoListener();
-		Boolean ehEventosAtivos = al.checarPagina();
+		PageListener pl = new PageListener();
+		Boolean ehEventosAtivos = pl.checarPagina();
 		
 		if (ehEventosAtivos == true) {
 			EventoDAO eventoDao = new EventoDAO();
@@ -253,8 +253,8 @@ public class EventoBean implements Serializable {
 	public void capturarEvento(ActionEvent event) {
 		try {
 			evento = (Evento) event.getComponent().getAttributes().get("eventoSelecionado");
-			FacesContext.getCurrentInstance().getExternalContext().getFlash().put("eventoNome", evento);
-			FacesContext.getCurrentInstance().getExternalContext().redirect("detalhes-evento.xhtml");
+			FacesContext.getCurrentInstance().getExternalContext().getFlash().put("eventoNome", evento);			
+			FacesContext.getCurrentInstance().getExternalContext().redirect("detail-evento.xhtml?codigo=" + evento.getCodigo());
 
 		} catch (RuntimeException | IOException e) {
 			// TODO: handle exception

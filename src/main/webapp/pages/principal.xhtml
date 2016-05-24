@@ -7,16 +7,32 @@
 	xmlns:f="http://xmlns.jcp.org/jsf/core"
 	template="/templates/modelo.xhtml">
 
+	<ui:define name="topo">		
+			<div class="ui-grid ui-grid-responsive">
+				<div class="ui-grid-row">
+					<div class="ui-grid-col-9">
+						<div></div>
+					</div>
+
+					<div class="ui-grid-col-3">
+						<div class="nomePaginaPrincipal">
+							Bem vindo,<br></br>#{autenticacaoBean.usuarioLogado.nome}
+						</div>
+					</div>
+
+				</div>
+			</div>
+	</ui:define>
+
 	<ui:define name="conteudo">
 		<div class="ui-grid ui-grid-responsive">
 			<div class="ui-grid-row">
 				<div class="ui-grid-col-6">
-					<div id="squarePerfil">Bem vindo,
-						#{autenticacaoBean.usuarioLogado.nome}!</div>
+					<div id="squarePerfilSemTextAlign"></div>
 				</div>
 				<div class="ui-grid-col-6">
 					<div
-						style="float: right; margin-top: 15px; margin-right: 5px; font-family: sans-serif; font-weight: bold; font-size: 16px; color:rgba(0, 0, 0, 0.44);">
+						style="float: right; margin-top: 15px; margin-right: 5px; font-family: sans-serif; font-weight: bold; font-size: 16px; color: rgba(0, 0, 0, 0.43);">
 						<h:form>
 							<h:outputLabel for="busca" value="Procurar evento: " />
 							<p:inputText id="busca" value="#{eventoBuscaBean.termoBuscado}" />
@@ -33,15 +49,13 @@
 		</div>
 
 		<h:form id="formListagem">
+			<p:panel header="Eventos" style="text-align:center;">
 
 			<p:dataGrid id="tabelaEventos" var="evento"
 				value="#{eventoBean.eventos}" columns="3" layout="grid" rows="12"
-				paginator="true"
-				paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+				paginator="true" paginatorPosition="bottom">
 
-				<f:facet name="header">
-						Eventos
-				</f:facet>
+			
 
 
 				<p:panel header="#{evento.descricao}" style="text-align:center">
@@ -71,6 +85,7 @@
 				</p:panel>
 
 			</p:dataGrid>
+			</p:panel>
 		</h:form>
 
 

@@ -9,9 +9,9 @@
 
 		<!-- Configurações de Conexão com o Banco de Dados -->
 		<property name="connection.driver_class">com.mysql.jdbc.Driver</property>
-		<property name="connection.url">jdbc:mysql://127.9.34.130:3306/mixeventos</property>
-		<property name="connection.username">adminvaYeQru</property>
-		<property name="connection.password">hmZpyLpzTMmr</property>
+		<property name="connection.url">jdbc:mysql://localhost:3306/mixeventos</property>
+		<property name="connection.username">root</property>
+		<property name="connection.password"></property>
 
 		<!-- Pool de Conexões -->
 		<property name="connection.pool_size">1</property>

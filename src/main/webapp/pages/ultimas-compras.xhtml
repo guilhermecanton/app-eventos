@@ -8,8 +8,15 @@
 	template="/templates/modelo.xhtml">
 
 	<ui:define name="conteudo">
+	<div class="ui-grid ui-grid-responsive">
+			<div class="ui-grid-row">
+				<div class="ui-grid-col-12">
+					<div id="squarePerfil">Compras realizadas</div>
+				</div>
+			</div>
+		</div>
 		<h:form id="formListagem">
-			<p:panel header="Últimas compras">
+			<p:panel header="Minhas compras" style="text-align:center;">
 				<p:dataTable id="tabelaListagem"
 					value="#{ultimasComprasBean.ultimasCompras}" var="compra"
 					paginator="true" emptyMessage="O usuário não possui nenhuma compra"

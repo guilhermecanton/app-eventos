@@ -18,6 +18,7 @@ import org.omnifaces.util.Messages;
 import br.com.mixeventos.dao.EventoDAO;
 import br.com.mixeventos.domain.Evento;
 import br.com.mixeventos.util.AutenticacaoListener;
+import br.com.mixeventos.util.PageListener;
 
 @SuppressWarnings("serial")
 @ManagedBean
@@ -33,10 +34,10 @@ public class EventoBuscaBean implements Serializable {
 	@PostConstruct
 	public void init() {
 		evento = new Evento();
-		AutenticacaoListener al = new AutenticacaoListener();
+		PageListener pl = new PageListener();
 		eventosCapturadosBuscaSimples = (List<Evento>) FacesContext.getCurrentInstance().getExternalContext().getFlash()
 				.get("eventosBuscaSimples");	
-		Boolean ehEventosComCategoria = al.checarPaginaBuscaEventos();	
+		Boolean ehEventosComCategoria = pl.checarPaginaBuscaEventos();	
 		if (ehEventosComCategoria == false) {
 			eventosCapturados = (List<Evento>) FacesContext.getCurrentInstance().getExternalContext().getFlash()
 					.get("eventosPorCategoriaSub");			
@@ -51,7 +52,7 @@ public class EventoBuscaBean implements Serializable {
 		try {
 			evento = (Evento) event.getComponent().getAttributes().get("eventoSelecionado");
 			FacesContext.getCurrentInstance().getExternalContext().getFlash().put("eventoNome", evento);
-			FacesContext.getCurrentInstance().getExternalContext().redirect("detalhes-evento.xhtml");
+			FacesContext.getCurrentInstance().getExternalContext().redirect("detail-evento.xhtml?codigo=" + evento.getCodigo());
 
 		} catch (RuntimeException | IOException e) {
 			// TODO: handle exception

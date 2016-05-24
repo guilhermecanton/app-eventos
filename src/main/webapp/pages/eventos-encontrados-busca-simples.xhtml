@@ -9,50 +9,47 @@
 
 	<ui:define name="conteudo">
 		<h:form id="formListagem">
+			<p:panel header="Eventos" style="text-align:center;">
+			
+				<p:dataGrid id="tabelaEventos" var="evento"
+					emptyMessage="Não há nenhum evento nesta categoria!"
+					value="#{eventoBuscaBean.eventosCapturadosBuscaSimples}"
+					columns="3" layout="grid" rows="12" paginator="true"
+					paginatorPosition="bottom">
+			
+					<p:panel header="#{evento.descricao}" style="text-align:center">
+
+						<h:panelGrid id="painelEventos" columns="1"
+							style="margin: 0 auto;">
+
+							<h:graphicImage value="/images/evento#{evento.codigo}.jpg" />
+
+
+							<h:outputText value="#{evento.descricao}" />
+
+
+							<h:outputText
+								value="#{evento.tipoCategoria.categoria.nomeCategoria}" />
 
 
 
-			<p:dataGrid id="tabelaEventos" var="evento"
-				emptyMessage="Não há nenhum evento nesta categoria!"
-				value="#{eventoBuscaBean.eventosCapturadosBuscaSimples}" columns="3"
-				layout="grid" rows="12" paginator="true"
-				paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
-
-				<f:facet name="header">
-						Eventos
-				</f:facet>
+							<h:outputText value="#{evento.tipoCategoria.nomeTipoCategoria}" />
 
 
-				<p:panel header="#{evento.descricao}" style="text-align:center">
-
-					<h:panelGrid id="painelEventos" columns="1" style="margin: 0 auto;">
-
-						<h:graphicImage value="/images/evento#{evento.codigo}.jpg" />
-
-
-						<h:outputText value="#{evento.descricao}" />
+							<p:commandButton value="Comprar"
+								actionListener="#{eventoBuscaBean.capturarEvento}">
+								<f:attribute name="eventoSelecionado" value="#{evento}" />
+							</p:commandButton>
 
 
-						<h:outputText
-							value="#{evento.tipoCategoria.categoria.nomeCategoria}" />
+						</h:panelGrid>
 
 
+					</p:panel>
 
-						<h:outputText value="#{evento.tipoCategoria.nomeTipoCategoria}" />
-
-
-						<p:commandButton value="Comprar"
-							actionListener="#{eventoBuscaBean.capturarEvento}">
-							<f:attribute name="eventoSelecionado" value="#{evento}" />
-						</p:commandButton>
+				</p:dataGrid>
 				
-
-					</h:panelGrid>
-
-
 				</p:panel>
-
-			</p:dataGrid>
 		</h:form>
 
 

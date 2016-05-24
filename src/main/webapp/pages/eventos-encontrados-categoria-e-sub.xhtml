@@ -9,18 +9,14 @@
 
 	<ui:define name="conteudo">
 		<h:form id="formListagem">
-
+		<p:panel header="Eventos" style="text-align:center;">
 
 
 			<p:dataGrid id="tabelaEventos" var="evento"
 				emptyMessage="Não há nenhum evento nesta categoria!"
 				value="#{eventoBuscaBean.eventosCapturados}" columns="3"
-				layout="grid" rows="12" paginator="true"
-				paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+				layout="grid" rows="12" paginator="true" paginatorPosition="bottom">
 
-				<f:facet name="header">
-						Eventos
-				</f:facet>
 
 
 				<p:panel header="#{evento.descricao}" style="text-align:center">
@@ -54,6 +50,8 @@
 
 
 			</p:dataGrid>
+			
+			</p:panel>
 		</h:form>
 
 

@@ -44,28 +44,6 @@ public class AutenticacaoListener implements PhaseListener {
 		return PhaseId.RESTORE_VIEW;
 	}
 	
-	// CHECAGEM DE PAGINA EVENTOS
-	public boolean checarPagina(){
-		String paginaAtiva = Faces.getViewId();	
-		
-		if(paginaAtiva.equals("/pages/eventos.xhtml")){
-			return true;
-		}else if(paginaAtiva.equals("/pages/lista-eventos.xhtml")){
-			return false;
-		}
-		return false;		
-	}
 	
-	// CHECAGEM DE PAGINA EVENTOS
-	public boolean checarPaginaBuscaEventos(){
-		String paginaAtiva = Faces.getViewId();	
-		
-		if(paginaAtiva.equals("/pages/eventos-encontrados.xhtml")){
-			return true;
-		}else if(paginaAtiva.equals("/pages/eventos-encontrados-categoria-e-sub.xhtml")){
-			return false;
-		}
-		return false;		
-	}
 
 }

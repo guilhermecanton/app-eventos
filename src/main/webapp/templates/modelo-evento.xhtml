@@ -11,7 +11,7 @@
 	<h:outputStylesheet library="css" name="estilos.css" />
 </h:head>
 <h:body
-	style="margin: 0px; background-image: url(../resources/images/backgrounds/header.jpg); background-size:105% 180px; background-repeat: no-repeat;">
+	style="margin: 0px; background-image: url(../resources/images/backgrounds/header.jpg); background-size:131% 180px; background-repeat: no-repeat; background-position-x:-256px;">
 	<p:growl id="mensagem" />
 
 
@@ -29,7 +29,7 @@
 					<p:menuitem value="Minhas compras"
 						url="/pages/ultimas-compras.xhtml" styleClass="listaMenu" />
 					<p:menuitem value="Mensagens"
-						actionListener="#{autenticacaoBean.logout}" styleClass="listaMenu" />
+						url="/pages/mensagens.xhtml" styleClass="listaMenu" />
 					<p:menuitem value="Configurações" styleClass="listaMenu" />
 
 
@@ -106,7 +106,7 @@
 		</div>
 
 		<div id="conteudo"
-			style="background: rgba(166, 166, 172, 0.15); height: auto;">
+			style="background: rgba(166, 166, 172, 0.15); height: auto; min-height: 500px;">
 			<ui:insert name="conteudo" />
 		</div>
 
