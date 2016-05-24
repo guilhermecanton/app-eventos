@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	template="/templates/modelo-mensagem.xhtml">
+
+	<ui:define name="conteudo">
+		
+
+		<h:form id="formListagem">
+			<p:panel header="Mensagens enviadas" style="text-align:center;">
+				<p:dataTable id="tabelaMsgs" value="#{mensagemBean.mensagens}"
+					var="msg" paginator="true" rows="10"
+					emptyMessage="Não há mensagens" paginatorPosition="bottom" sortBy="#{msg.data}" sortOrder="descending" >
+					<f:facet name="header">
+						<p:commandButton value="Enviar nova mensagem"
+							actionListener="#{mensagemBean.novo}"
+							oncomplete="PF('dialogoCriarMsg').show();">
+							<f:actionListener
+								type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
+						</p:commandButton>
+						
+						<p:commandButton value="Caixa de entrada"
+							actionListener="#{mensagemBean.redirecionaMensagensRecebidas}" />
+						
+					</f:facet>
+
+					<p:column headerText="Remetente">
+						<h:outputText value="#{msg.remetente.email}" />
+					</p:column>
+					
+
+					<p:column headerText="Assunto">
+						<h:outputText value="#{msg.assunto}" />
+					</p:column>
+
+					<p:column headerText="Data">
+						<h:outputText value="#{msg.data}" />
+					</p:column>
+			
+
+					<p:column headerText="Opções">
+						<p:commandButton value="Visualizar"
+							actionListener="#{mensagemBean.capturarMensagem}"
+							oncomplete="PF('dialogoInfosMsg').show();"
+							update=":mensagem :formInfosMsg:painelInfosMsg">
+							<f:attribute name="msgSelecionada" value="#{msg}" />
+						</p:commandButton>
+					</p:column>
+				</p:dataTable>
+			</p:panel>
+
+		</h:form>
+
+
+		<!-- DIÁLOGO ENVIAR NOVA MENSAGEM -->
+
+		<p:dialog header="Enviar mensagem" widgetVar="dialogoCriarMsg"
+			modal="true" resizable="false" draggable="false" closable="false">
+			<h:form id="formNovaMsg">
+				<h:panelGrid id="painelNovaMsg" columns="2">
+
+
+					<h:outputText for="destinatario" value="Destinatário:" />
+					<p:inputText id="destinatario"
+						value="#{mensagemBean.emailDestinatario}" required="true"
+						requiredMessage="O campo DESTINATARIO é obrigatório" size="25"
+						maxlength="50" />
+
+					<h:outputText for="assunto" value="Assunto: " />
+					<p:inputText id="assunto" value="#{mensagemBean.mensagem.assunto}"
+						required="true" requiredMessage="O campo ASSUNTO é obrigatório!"
+						size="25" maxlength="40" />
+
+					<h:outputText for="msg" value="Mensagem: " />
+					<p:inputTextarea id="msg" value="#{mensagemBean.mensagem.texto}"
+						maxlength="100" requiredMessage="O campo TEXTO esta em branco!" />
+
+
+
+				</h:panelGrid>
+				<!--  PAINEL DOS BOTÕES DO DIALOGO -->
+
+				<h:panelGrid columns="2">
+					<p:commandButton value="Enviar"
+						actionListener="#{mensagemBean.enviar}"
+						update=":mensagem :formListagem:tabelaMsgs :formNovaMsg:painelNovaMsg" />
+					<p:commandButton value="Fechar"
+						oncomplete="PF('dialogoCriarMsg').hide();" />
+				</h:panelGrid>
+				<!--  FIM DO PAINEL DOS BOTÕES DO DIALOGO -->
+
+			</h:form>
+		</p:dialog>
+		<!-- FIM DO DIÁLOGO PARA ENVIAR NOVA MSG -->
+
+
+		<!-- DIÁLOGO PARA VER INFOS DA MSG-->
+
+		<p:dialog header="Mensagem recebida" widgetVar="dialogoInfosMsg"
+			modal="true" resizable="false" draggable="false" closable="false" style="width:150px;">
+			<h:form id="formInfosMsg">
+				<h:panelGrid id="painelInfosMsg" columns="2">
+
+					<h:outputText for="rem" value="Remetente:" />
+					<p:outputLabel id="rem"
+						value="#{mensagemBean.mensagemSelecionada.remetente.nome}" />
+
+					<h:outputText for="emailrem" value="E-mail remetente:" />
+					<p:outputLabel id="emailrem"
+						value="#{mensagemBean.mensagemSelecionada.remetente.email}" />
+
+					<h:outputText for="subject" value="Assunto" />
+					<p:outputLabel id="subject"
+						value="#{mensagemBean.mensagemSelecionada.assunto}" />
+
+					<h:outputText for="msgem" value="Mensagem:" />
+					<p:outputLabel id="msgem"
+						value="#{mensagemBean.mensagemSelecionada.texto}" />
+
+
+				</h:panelGrid>
+				<!--  PAINEL DOS BOTÕES DO DIALOGO -->
+
+				<h:panelGrid columns="1">
+					<p:commandButton value="Fechar"
+						actionListener="#{mensagemBean.trocarEstadoDaMsg}"
+						oncomplete="PF('dialogoInfosMsg').hide();"
+						update=":formListagem:tabelaMsgs :formInfosMsg:painelInfosMsg" />
+				</h:panelGrid>
+				<!--  FIM DO PAINEL DOS BOTÕES DO DIALOGO -->
+
+			</h:form>
+		</p:dialog>
+		<!-- FIM DO DIÁLOGO DE INFOS DA MSG -->
+
+
+
+	</ui:define>
+
+</ui:composition>
