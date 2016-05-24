@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE hibernate-configuration SYSTEM 
+"http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+
+<hibernate-configuration>
+
+	<session-factory>
+
+		<!-- Configurações de Conexão com o Banco de Dados -->
+		<property name="connection.driver_class">com.mysql.jdbc.Driver</property>
+		<property name="connection.url">jdbc:mysql://127.9.34.130:3306/mixeventos</property>
+		<property name="connection.username">adminvaYeQru</property>
+		<property name="connection.password">hmZpyLpzTMmr</property>
+
+		<!-- Pool de Conexões -->
+		<property name="connection.pool_size">1</property>
+
+		<!-- SQL dialect -->
+		<property name="dialect">org.hibernate.dialect.MySQL5InnoDBDialect</property>
+
+		<!-- Gerenciamento do Contexto das Sessões -->
+		<property name="current_session_context_class">thread</property>
+
+		<!-- Cache de Segundo Nível -->
+		<property name="cache.provider_class">org.hibernate.cache.internal.NoCacheProvider</property>
+
+		<!-- Mostra as SQLs Geradas -->
+		<property name="show_sql">true</property>
+
+		<!-- Cria as tabelas do banco de dados -->
+		<property name="hbm2ddl.auto">update</property>
+		
+		<!-- ENTIDADES -->
+		
+		<mapping class="br.com.mixeventos.domain.Ambiente" />
+		<mapping class="br.com.mixeventos.domain.Categoria" />
+		<mapping class="br.com.mixeventos.domain.Compra" />
+		<mapping class="br.com.mixeventos.domain.Evento" />
+		<mapping class="br.com.mixeventos.domain.Ingresso" />
+		<mapping class="br.com.mixeventos.domain.Setor" />
+		<mapping class="br.com.mixeventos.domain.TipoAmbiente" />
+		<mapping class="br.com.mixeventos.domain.Usuario" />
+		<mapping class="br.com.mixeventos.domain.TipoCategoria" />
+		<mapping class="br.com.mixeventos.domain.Mensagem" />
+
+		
+		
+	</session-factory>
+
+</hibernate-configuration>

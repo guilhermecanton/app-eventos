@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	template="/templates/modelo-evento.xhtml">
+
+	<ui:define name="conteudo">
+		<h:form id="formListagem">
+
+
+
+			<p:dataGrid id="tabelaEventos" var="evento"
+				emptyMessage="Não há nenhum evento nesta categoria!"
+				value="#{eventoBuscaBean.eventosCapturadosBuscaSimples}" columns="3"
+				layout="grid" rows="12" paginator="true"
+				paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+
+				<f:facet name="header">
+						Eventos
+				</f:facet>
+
+
+				<p:panel header="#{evento.descricao}" style="text-align:center">
+
+					<h:panelGrid id="painelEventos" columns="1" style="margin: 0 auto;">
+
+						<h:graphicImage value="/images/evento#{evento.codigo}.jpg" />
+
+
+						<h:outputText value="#{evento.descricao}" />
+
+
+						<h:outputText
+							value="#{evento.tipoCategoria.categoria.nomeCategoria}" />
+
+
+
+						<h:outputText value="#{evento.tipoCategoria.nomeTipoCategoria}" />
+
+
+						<p:commandButton value="Comprar"
+							actionListener="#{eventoBuscaBean.capturarEvento}">
+							<f:attribute name="eventoSelecionado" value="#{evento}" />
+						</p:commandButton>
+				
+
+					</h:panelGrid>
+
+
+				</p:panel>
+
+			</p:dataGrid>
+		</h:form>
+
+
+
+	</ui:define>
+
+</ui:composition>

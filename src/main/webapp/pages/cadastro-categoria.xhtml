@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	template="/templates/modelo.xhtml">
+
+	<ui:define name="conteudo">
+
+		<h:form id="formCategoria">
+			<p:panel header="Categorias">
+				<p:dataTable id="tabelaCategoria"
+					value="#{categoriaBean.categorias}" var="categoria"
+					emptyMessage="Não há categorias cadastradas" rows="10"
+					paginator="true">
+
+					<f:facet name="header">
+						<p:commandButton value="Inserir categoria"
+							actionListener="#{categoriaBean.novo}"
+							oncomplete="PF('dialogoCadastro').show();"
+							update=":mensagem :formCadastro:painelCadastro">
+
+							<f:actionListener
+								type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
+
+						</p:commandButton>
+
+					</f:facet>
+
+					<p:column headerText="Codigo">
+						<h:outputText value="#{categoria.codigo}" />
+					</p:column>
+
+					<p:column headerText="Nome">
+						<h:outputText value="#{categoria.nomeCategoria}" />
+					</p:column>
+
+					<p:column headerText="Opções">
+						<p:commandButton icon="ui-icon-pencil"
+							actionListener="#{categoriaBean.capturarCategoria}"
+							oncomplete="PF('dialogoEditarCadastro').show();"
+							update=":mensagem :formEditarCadastro:painelEditarCadastro">
+							<f:actionListener
+								type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
+							<f:attribute name="categoriaSelecionada" value="#{categoria}" />
+						</p:commandButton>
+
+						<p:commandButton icon="ui-icon-trash"
+							actionListener="#{categoriaBean.excluir}"
+							update=":mensagem :formCategoria:tabelaCategoria">
+							<p:confirm header="Confirmação"
+								message="Deseja excluir a categoria?" icon="ui-icon-alert" />
+							<f:attribute name="categoriaSelecionada" value="#{categoria}" />
+						</p:commandButton>
+
+					</p:column>
+				</p:dataTable>
+
+				<p:confirmDialog global="true">
+					<p:commandButton value="Sim" type="button"
+						styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+					<p:commandButton value="Não" type="button"
+						styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+				</p:confirmDialog>
+
+			</p:panel>
+		</h:form>
+
+		<!--  DIALOGO PARA NOVO CADASTRO DE CATEGORIA -->
+
+		<p:dialog header="Cadastro - Categoria" widgetVar="dialogoCadastro"
+			modal="true" resizable="false" draggable="false" closable="false">
+			<h:form id="formCadastro">
+				<h:panelGrid id="painelCadastro" columns="2">
+
+					<h:outputText for="nome" value="Nome da categoria: " />
+					<p:inputText id="nome"
+						value="#{categoriaBean.categoria.nomeCategoria}" required="true"
+						requiredMessage="O campo NOME DA CATEGORIA é obrigatório!"
+						size="25" maxlength="15" />
+
+				</h:panelGrid>
+				<!--  PAINEL DOS BOTÕES DO DIALOGO -->
+
+				<h:panelGrid columns="2">
+					<p:commandButton value="Salvar"
+						actionListener="#{categoriaBean.salvar}"
+						update=":mensagem :formCategoria:tabelaCategoria :formCadastro:painelCadastro" />
+					<p:commandButton value="Fechar"
+						oncomplete="PF('dialogoCadastro').hide();" />
+				</h:panelGrid>
+				<!--  FIM DO PAINEL DOS BOTÕES DO DIALOGO -->
+
+			</h:form>
+		</p:dialog>
+
+		<!-- FIM DIALOGO PARA NOVO CADASTRO DE CATEGORIA -->
+
+
+
+		<!--  DIALOGO PARA EDITAR CADASTRO DE CATEGORIA -->
+
+		<p:dialog header="Cadastro - Categoria"
+			widgetVar="dialogoEditarCadastro" modal="true" resizable="false"
+			draggable="false" closable="false">
+			<h:form id="formEditarCadastro">
+				<h:panelGrid id="painelEditarCadastro" columns="2">
+
+					<h:outputText for="nome" value="Nome da categoria: " />
+					<p:inputText id="nome"
+						value="#{categoriaBean.categoria.nomeCategoria}" required="true"
+						requiredMessage="O campo NOME DA CATEGORIA é obrigatório!"
+						size="25" maxlength="15" />
+
+				</h:panelGrid>
+				<!--  PAINEL DOS BOTÕES DO DIALOGO -->
+
+				<h:panelGrid columns="2">
+					<p:commandButton value="Salvar"
+						actionListener="#{categoriaBean.salvarEdicao}"
+						update=":mensagem :formCategoria:tabelaCategoria :formEditarCadastro:painelEditarCadastro" />
+					<p:commandButton value="Fechar"
+						oncomplete="PF('dialogoEditarCadastro').hide();" />
+				</h:panelGrid>
+				<!--  FIM DO PAINEL DOS BOTÕES DO DIALOGO -->
+
+			</h:form>
+		</p:dialog>
+
+		<!-- FIM DIALOGO PARA EDITAR CADASTRO DE CATEGORIA -->
+	</ui:define>
+
+</ui:composition>

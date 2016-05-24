@@ -1,0 +1,325 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	template="/templates/modelo.xhtml">
+
+	<ui:define name="conteudo">
+		<h:form id="formListagem">
+			<p:panel header="Eventos - Listagem">
+				<p:dataTable id="tabelaEventos" value="#{eventoBean.eventos}"
+					var="e" paginator="true" emptyMessage="Nenhum registro encontrado"
+					rows="10" sortBy="#{e.ativoFormatado}">
+
+					<f:facet name="header">
+						<p:commandButton value="Novo" actionListener="#{eventoBean.novo}"
+							oncomplete="PF('dialogoCadastro').show();"
+							update=":mensagem :formCadastro:painelCadastro">
+
+							<f:actionListener
+								type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
+
+						</p:commandButton>
+					</f:facet>
+
+					<p:column headerText="Codigo">
+						<h:outputText value="#{e.codigo}" />
+					</p:column>
+
+					<p:column headerText="Descrição">
+						<h:outputText value="#{e.descricao}" />
+					</p:column>
+
+					<p:column headerText="Data">
+						<h:outputText value="#{e.dataEvento}">
+							<f:convertDateTime pattern="dd/MM/yyyy" locale="pt" />
+						</h:outputText>
+					</p:column>
+
+					<p:column headerText="Status">
+						<h:outputText value="#{e.ativoFormatado}" />
+					</p:column>
+
+					<p:column headerText="Opções">
+
+						<p:commandButton icon="ui-icon-pencil"
+							actionListener="#{eventoBean.editar}"
+							update=":mensagem :formEditar:painelEditar"
+							oncomplete="PF('dialogoEditar').show();">
+							<f:attribute name="eventoSelecionado" value="#{e}" />
+							<f:actionListener
+								type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
+						</p:commandButton>
+
+
+						<p:commandButton icon="ui-icon-transferthick-e-w"
+							update=":mensagem" actionListener="#{eventoBean.editar}"
+							oncomplete="PF('dialogoEditarImagem').show();">
+							<f:attribute name="eventoSelecionado" value="#{e}" />
+						</p:commandButton>
+
+
+						<p:commandButton icon="ui-icon-trash"
+							actionListener="#{eventoBean.excluir}"
+							update=":mensagem :formListagem:tabelaEventos">
+							<f:attribute name="eventoSelecionado" value="#{e}" />
+							<p:confirm header="Confirmação"
+								message="Tem certeza que deseja excluir este evento?"
+								icon="ui-icon-alert" />
+						</p:commandButton>
+
+						<p:commandButton icon="ui-icon-info"
+							actionListener="#{eventoBean.editar}"
+							oncomplete="PF('dialogoInfo').show();"
+							update=":mensagem :formInfo:painelInfo :formInfo:painelInfoImg">
+							<f:attribute name="eventoSelecionado" value="#{e}" />
+						</p:commandButton>
+
+
+					</p:column>
+
+				</p:dataTable>
+
+				<!--  DIALOGO PARA CONFIRMAÇÃO DE EXCLUSÃO DE CADASTRO -->
+
+				<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+					<p:commandButton value="Sim" type="button"
+						styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+					<p:commandButton value="Não" type="button"
+						styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+				</p:confirmDialog>
+
+				<!--  FIM DO DIALOGO PARA CONFIRMAÇÃO DE EXCLUSÃO DE CADASTRO -->
+
+			</p:panel>
+		</h:form>
+
+		<!--  DIALOGO PARA NOVO CADASTRO DE EVENTO -->
+
+		<p:dialog header="Cadastro - Eventos" widgetVar="dialogoCadastro"
+			modal="true" resizable="false" draggable="false" closable="false">
+			<h:form id="formCadastro" enctype="multipart/form-data">
+				<h:panelGrid id="painelCadastro" columns="2">
+
+					<h:outputText for="desc" value="Descrição: " />
+					<p:inputText id="desc" value="#{eventoBean.evento.descricao}"
+						required="true" requiredMessage="O campo DESCRIÇÃO é obrigatório!"
+						size="25" maxlength="50" />
+
+					<h:outputText for="data" value="Data:" />
+					<p:calendar id="data" value="#{eventoBean.evento.dataEvento}"
+						required="true" requiredMessage="O campo DATA é obrigatório"
+						pattern="dd/MM/yyyy" locale="pt" />
+
+					<h:outputText for="resumo" value="Resumo: " />
+					<p:inputText id="resumo" value="#{eventoBean.evento.resumo}"
+						required="true" requiredMessage="O campo RESUMO é obrigatório!"
+						size="25" maxlength="50" />
+
+					<h:outputText for="qtdeingressos" value="Quantidade ingressos: " />
+					<p:inputText id="qtdeingressos"
+						value="#{eventoBean.evento.quantidadeIngressos}" required="true"
+						requiredMessage="O campo Quantidade de Ingressos é obrigatório!"
+						size="25" maxlength="5"
+						validatorMessage="A quantidade de ingressos não pode ser menor que 20 ou maior que 50.000">
+						<f:validateLongRange minimum="20" maximum="50000"
+							for="qtdeingressos" />
+					</p:inputText>
+
+					<h:outputText for="preco" value="Preço ingresso: " />
+					<p:inputText id="preco" value="#{eventoBean.evento.valor}"
+						required="true"
+						requiredMessage="O campo Valor do ingresso é obrigatório!"
+						size="25" maxlength="5"
+						validatorMessage="O valor mínimo para o ingresso é 10 e o valor máximo é 10.000">
+						<f:validateLongRange minimum="10" maximum="10000" for="preco" />
+					</p:inputText>
+
+					<p:outputLabel for="categoria" value="Categoria: " />
+					<p:selectOneMenu id="categoria" filter="true"
+						value="#{eventoBean.categoria}"
+						converter="omnifaces.SelectItemsConverter" required="true"
+						requiredMessage="O campo Categoria é obrigatório!">
+
+						<f:selectItem noSelectionOption="true"
+							itemLabel="Selecione uma categoria" />
+						<f:selectItems value="#{eventoBean.categorias}" var="categoria"
+							itemValue="#{categoria}" itemLabel="#{categoria.nomeCategoria}" />
+
+						<p:ajax listener="#{eventoBean.popular}"
+							update=":formCadastro:tipoCategoria" />
+					</p:selectOneMenu>
+
+
+					<p:outputLabel for="tipoCategoria" value="Sub-Categoria: " />
+					<p:selectOneMenu id="tipoCategoria" filter="true"
+						value="#{eventoBean.evento.tipoCategoria}"
+						converter="omnifaces.SelectItemsConverter" required="true"
+						requiredMessage="O campo Sub Categoria é obrigatório!">
+
+						<f:selectItem noSelectionOption="true"
+							itemLabel="Selecione uma categoria" />
+						<f:selectItems value="#{eventoBean.tipoCategoria}"
+							var="tipocategoria" itemValue="#{tipocategoria}"
+							itemLabel="#{tipocategoria.nomeTipoCategoria}" />
+					</p:selectOneMenu>
+
+
+					<p:outputLabel for="ambiente" value="Ambiente: " />
+					<p:selectOneMenu id="ambiente" filter="true"
+						value="#{eventoBean.evento.ambiente}"
+						converter="omnifaces.SelectItemsConverter" required="true"
+						requiredMessage="O campo Ambienteé obrigatório!">
+
+						<f:selectItem noSelectionOption="true"
+							itemLabel="Selecione um ambiente" />
+						<f:selectItems value="#{eventoBean.ambientes}" var="amb"
+							itemValue="#{amb}" itemLabel="#{amb.descricao}" />
+					</p:selectOneMenu>
+
+
+
+					<h:outputText for="img" value="Imagem: " />
+					<p:fileUpload id="img" fileUploadListener="#{eventoBean.upload}"
+						mode="advanced" description="Select Images" />
+
+				</h:panelGrid>
+
+				<!--  PAINEL DOS BOTÕES DO DIALOGO -->
+
+				<h:panelGrid columns="2">
+					<p:commandButton value="Salvar"
+						actionListener="#{eventoBean.salvar}"
+						update=":mensagem :formListagem:tabelaEventos :formCadastro:painelCadastro" />
+					<p:commandButton value="Fechar"
+						oncomplete="PF('dialogoCadastro').hide();" />
+				</h:panelGrid>
+				<!--  FIM DO PAINEL DOS BOTÕES DO DIALOGO -->
+
+			</h:form>
+		</p:dialog>
+
+		<!-- FIM DIALOGO PARA NOVO CADASTRO DE EVENTO -->
+
+
+
+		<!--  DIALOGO PARA EDITAR DADOS DE CADASTRO DO EVENTO-->
+
+		<p:dialog header="Eventos - Editar" widgetVar="dialogoEditar"
+			draggable="false" resizable="false" modal="true" closable="false">
+			<h:form id="formEditar">
+				<h:panelGrid id="painelEditar" columns="2">
+
+					<h:outputText for="desc" value="Descrição: " />
+					<p:inputText id="desc" value="#{eventoBean.evento.descricao}"
+						required="true" requiredMessage="O campo DESCRIÇÃO é obrigatório!"
+						size="25" maxlength="50" />
+
+					<h:outputText for="data" value="Data:" />
+					<p:calendar id="data" value="#{eventoBean.evento.dataEvento}"
+						required="true" requiredMessage="O campo DATA é obrigatório"
+						pattern="dd/MM/yyyy" locale="pt" />
+
+					<h:outputText for="resumo" value="Resumo: " />
+					<p:inputText id="resumo" value="#{eventoBean.evento.resumo}"
+						required="true" requiredMessage="O campo RESUMO é obrigatório!"
+						size="25" maxlength="50" />
+
+					<h:outputText for="ativo" value="Ativo" />
+					<p:selectOneRadio id="ativo" value="#{eventoBean.evento.ativo}">
+						<f:selectItem itemLabel="Sim" itemValue="true" />
+						<f:selectItem itemLabel="Não" itemValue="false" />
+					</p:selectOneRadio>
+
+				</h:panelGrid>
+
+				<h:panelGrid columns="2">
+					<p:commandButton value="Salvar"
+						actionListener="#{eventoBean.salvarEdicao}"
+						update=":mensagem :formEditar:painelEditar :formListagem:tabelaEventos" />
+					<p:commandButton value="Fechar"
+						oncomplete="PF('dialogoEditar').hide();" />
+				</h:panelGrid>
+
+			</h:form>
+		</p:dialog>
+
+		<!--  FIM DO DIALOGO PARA EDITAR DADOS DE CADASTRO DO EVENTO -->
+
+
+		<!--  DIALOGO PARA EDITAR A IMAGEM DO EVENTO -->
+
+		<p:dialog header="Editar Imagem" widgetVar="dialogoEditarImagem"
+			draggable="false" resizable="false" modal="true" closable="false">
+			<h:form id="formEditarFoto">
+				<h:panelGrid id="painelEditarFoto" columns="2">
+
+					<p:fileUpload fileUploadListener="#{eventoBean.upload}"
+						mode="advanced" description="Select Images" />
+
+				</h:panelGrid>
+
+				<h:panelGrid columns="2">
+					<p:commandButton value="Salvar"
+						actionListener="#{eventoBean.salvarEdicaoFoto}"
+						update=":mensagem :formEditarFoto:painelEditarFoto" />
+					<p:commandButton value="Fechar"
+						oncomplete="PF('dialogoEditarImagem').hide();" />
+				</h:panelGrid>
+
+			</h:form>
+		</p:dialog>
+
+		<!-- FIM DIALOGO PARA EDITAR A IMAGEM DO EVENTO -->
+
+
+		<!--  DIALOGO PARA INFOS DO EVENTO -->
+
+		<p:dialog header="Eventos - Informações" widgetVar="dialogoInfo"
+			draggable="false" resizable="false" modal="true" closable="false">
+			<h:form id="formInfo">
+
+				<h:panelGrid id="painelInfoImg" columns="1">
+					<h:graphicImage
+						value="/images/evento#{eventoBean.evento.codigo}.jpg"
+						style="border-radius:10px;" />
+				</h:panelGrid>
+
+				<h:panelGrid id="painelInfo" columns="2">
+
+				
+
+					<h:outputText for="desc" value="Descrição: " style="font-weight: bold;"/>
+					<h:outputLabel id="desc" value="#{eventoBean.evento.descricao}" />
+
+					<h:outputText for="local" value="Local: " style="font-weight: bold;" />
+					<h:outputLabel id="local" value="#{eventoBean.evento.ambiente.descricao}" />
+
+					<h:outputText for="totalIngressos" value="Total de Ingressos: " style="font-weight: bold;"/>
+					<h:outputLabel id="totalIngressos"
+						value="#{eventoBean.evento.quantidadeIngressos}" />
+
+					<h:outputText for="ingressosVendidos" value="Ingressos vendidos: "  style="font-weight: bold;"/>
+					<h:outputLabel id="ingressosVendidos"
+						value="#{eventoBean.evento.quantidadeIngressosVendidos}" />
+				</h:panelGrid>
+
+				<h:panelGrid columns="1"  style="float:right;">
+
+					<p:commandButton value="Fechar"
+						oncomplete="PF('dialogoInfo').hide();"/>
+				</h:panelGrid>
+
+			</h:form>
+		</p:dialog>
+
+		<!--  FIM DO DIALOGO PARA INFOS DO EVENTO -->
+
+
+
+	</ui:define>
+
+</ui:composition>

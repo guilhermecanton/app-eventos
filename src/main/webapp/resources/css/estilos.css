@@ -1,0 +1,33 @@
+@CHARSET "UTF-8";
+
+.imagemCentralizada{
+		display:block;
+		margin-left: auto;
+		margin-right: auto;
+}
+
+.ui-widget, .ui-widget .ui-widget {
+	font-size: 95% !important;
+}
+
+h1,h2,h3,h4{
+	font-family: sans-serif;
+	margin: 0px;
+}
+
+.listaMenu{
+	
+	font-size: 17px !important;
+	margin-right:20px;
+}
+
+#squarePerfil{
+	
+	margin: 15px 0px 0px 13px;
+	height: 41px;
+	text-align: left;
+	font-family: sans-serif;
+	font-weight: bold;
+	font-size: 20px;
+}
+

@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<title>Mix Eventos</title>
+	<h:outputStylesheet library="css" name="estilos.css" />
+</h:head>
+<h:body
+	style="margin: 0px; background-image: url(../resources/images/backgrounds/header.jpg); background-size:105% 180px; background-repeat: no-repeat;">
+	<p:growl id="mensagem" />
+
+
+	<div id="geral">
+
+		<div id="topo" style="height: 180px;"></div>
+
+		<div id="cabecalho">
+			<h:form id="formMenu">
+				<p:menubar>
+					<p:menuitem value="Home" url="/pages/principal.xhtml"
+						styleClass="listaMenu" />
+					<p:menuitem value="Procurar eventos" url="/pages/eventos.xhtml"
+						styleClass="listaMenu" />
+					<p:menuitem value="Minhas compras"
+						url="/pages/ultimas-compras.xhtml" styleClass="listaMenu" />
+					<p:menuitem value="Mensagens"
+						actionListener="#{autenticacaoBean.logout}" styleClass="listaMenu" />
+					<p:menuitem value="Configurações" styleClass="listaMenu" />
+
+
+
+					<p:submenu label="Cadastros"
+						rendered="#{autenticacaoBean.temPermissoes(['A','M'])}"
+						style="font-size:17px !important;">
+						<p:menuitem value="Ambiente" url="/pages/principal.xhtml" />
+						<p:menuitem value="Tipo de Ambiente" url="/pages/eventos.xhtml" />
+						<p:menuitem value="Setor" url="/pages/eventos.xhtml" />
+						<p:menuitem value="Categoria"
+							url="/pages/cadastro-categoria.xhtml" />
+						<p:menuitem value="Tipos de Categoria"
+							url="/pages/lista-eventos.xhtml" />
+						<p:menuitem value="Evento" url="/pages/lista-eventos.xhtml" />
+						<p:menuitem value="Usuario" url="/pages/cadastro-usuario.xhtml" />
+
+					</p:submenu>
+
+
+					<p:menuitem value="Sair"
+						actionListener="#{autenticacaoBean.logout}" styleClass="listaMenu" />
+
+
+				</p:menubar>
+			</h:form>
+		</div>
+
+		<div id="conteudo"
+			style="background: rgba(166, 166, 172, 0.15); height: auto; min-height: 500px;">
+			<ui:insert name="conteudo" />
+		</div>
+
+
+		<div id="rodape"
+			style="background: rgba(71, 74, 75, 0.96); height: 80px;">
+			<ui:insert name="rodape">
+				<center>
+					<h4 style="color: #fff; padding-top: 33px;">Desenvolvido por
+						Guilherme Canton</h4>
+				</center>
+			</ui:insert>
+
+		</div>
+
+	</div>
+
+</h:body>
+</html>

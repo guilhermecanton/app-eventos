@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	template="/templates/modelo.xhtml">
+
+	<ui:define name="conteudo">
+		<h:form id="formListagem">
+			<p:panel header="Últimas compras">
+				<p:dataTable id="tabelaListagem"
+					value="#{ultimasComprasBean.ultimasCompras}" var="compra"
+					paginator="true" emptyMessage="O usuário não possui nenhuma compra"
+					rows="10" >
+
+					<p:column headerText="Código da compra">
+						<h:outputText value="#{compra.codigo}" />
+					</p:column>
+
+					<p:column headerText="Data" sortBy="#{compra.dataCompra}">
+						<h:outputText value="#{compra.dataCompra}">
+							<f:convertDateTime pattern="dd/MM/yyyy" locale="pt" />
+						</h:outputText>
+					</p:column>
+
+					<p:column headerText="Valor do ingresso">
+						<h:outputText value="#{compra.valorIngresso}">
+							<f:convertNumber locale="pt_BR" minFractionDigits="2" />
+						</h:outputText>
+					</p:column>
+
+					<p:column headerText="Total">
+						<h:outputText value="#{compra.total}">
+							<f:convertNumber locale="pt_BR" minFractionDigits="2" />
+						</h:outputText>
+					</p:column>
+
+					<p:column headerText="Evento">							
+						<ui:repeat value="#{compra.ingressos}" var="ingresso" size="1">
+           					 #{ingresso.evento.descricao}
+        				</ui:repeat>
+					</p:column>
+
+				</p:dataTable>
+
+			</p:panel>
+		</h:form>
+
+	</ui:define>
+
+</ui:composition>

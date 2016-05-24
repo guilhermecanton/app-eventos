@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<title>Autenticação</title>
+</h:head>
+<h:body
+	style="background-image: url(../resources/images/backgrounds/bg.jpg)">
+	<p:growl id="mensagem" />
+
+	<p:dialog header="Login" closable="false" draggable="false"
+		resizable="false" modal="true" visible="true" showEffect="">
+		<h:form>
+			<h:panelGrid columns="2">
+				<p:outputLabel for="email" value="Email: " />
+				<p:inputText id="email" size="20" required="true"
+					requiredMessage="O campo Email é obrigatório!"
+					value="#{autenticacaoBean.usuario.email}" />
+
+				<p:outputLabel for="senha" value="Senha: " />
+				<p:password id="senha" maxlength="8" size="10" required="true"
+					requiredMessage="O campo SENHA é obrigatório!"
+					value="#{autenticacaoBean.usuario.senha}" />
+
+				<h:panelGrid columns="2">
+
+
+
+					<p:commandButton value="Entrar" update=":mensagem"
+						actionListener="#{autenticacaoBean.autenticar}" />
+
+					<p:commandButton value="Registrar"
+						actionListener="#{autenticacaoBean.novo}"
+						oncomplete="PF('dialogoCadastro').show();" />
+
+					<p:ajaxStatus onstart="PF('statusDialog').show()"
+						onsuccess="PF('statusDialog').hide()" />
+
+					<p:dialog widgetVar="statusDialog" modal="true" draggable="false"
+						closable="false" resizable="false" header="Autenticando...">
+						<p:graphicImage library="images"
+							name="#{autenticacaoBean.caminhoImg}" />
+					</p:dialog>
+				</h:panelGrid>
+			</h:panelGrid>
+		</h:form>
+	</p:dialog>
+
+	<p:dialog header="Cadastro - Usuarios" widgetVar="dialogoCadastro"
+		modal="true" resizable="false" draggable="false" closable="false">
+		<h:form id="formCadastro">
+
+			<h:panelGrid id="painelCadastro" columns="2">
+
+				<h:outputText for="nome" value="Nome: " />
+				<p:inputText id="nome"
+					value="#{autenticacaoBean.usuarioRegistro.nome}" required="true"
+					requiredMessage="O campo NOME é obrigatório!" size="25"
+					maxlength="50" />
+
+				<h:outputText for="email" value="Email" />
+				<p:inputText id="email"
+					value="#{autenticacaoBean.usuarioRegistro.email}" required="true"
+					requiredMessage="O campo EMAIL é obrigatório" size="25"
+					maxlength="50" />
+
+				<h:outputText for="cpf" value="CPF" />
+				<p:inputMask id="cpf"
+					value="#{autenticacaoBean.usuarioRegistro.cpf}" required="true"
+					requiredMessage="O campo CPF é obrigatório" size="15"
+					maxlength="14" mask="999.999.999-99" />
+
+				<h:outputText for="senha" value="Senha: " />
+				<p:password id="senha"
+					value="#{autenticacaoBean.usuarioRegistro.senhaNaoCriptografada}"
+					required="true" requiredMessage="O campo Senha é obrigatório"
+					size="10" maxlength="32" />
+
+
+			</h:panelGrid>
+			<!--  PAINEL DOS BOTÕES DO DIALOGO -->
+
+			<h:panelGrid columns="2">
+				<p:commandButton value="Registrar"
+					actionListener="#{autenticacaoBean.salvarUsuario}"
+					update=":mensagem :formCadastro:painelCadastro" />
+				<p:commandButton value="Cancelar"
+					oncomplete="PF('dialogoCadastro').hide();" />
+			</h:panelGrid>
+			<!--  FIM DO PAINEL DOS BOTÕES DO DIALOGO -->
+		</h:form>
+	</p:dialog>
+
+</h:body>
+</html>

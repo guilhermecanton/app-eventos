@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	template="/templates/modelo.xhtml">
+
+	<ui:define name="conteudo">
+
+		<h:form id="formListagem">
+			<p:panel>
+				<p:dataTable id="tabelaUsuario" value="#{usuarioBean.usuarios}"
+					var="usuario" paginator="true"
+					emptyMessage="Não há usuários cadastrados!" rows="10">
+
+					<f:facet name="header">
+						<p:commandButton value="Novo usuário"
+							actionListener="#{usuarioBean.novo}"
+							oncomplete="PF('dialogoCadastro').show();"
+							update=":mensagem :formCadastro:painelCadastro">
+
+							<f:actionListener
+								type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
+
+						</p:commandButton>
+					</f:facet>
+
+					<p:column headerText="Nome">
+						<h:outputText value="#{usuario.nome}" />
+					</p:column>
+
+					<p:column headerText="Email">
+						<h:outputText value="#{usuario.email}" />
+					</p:column>
+
+					<p:column headerText="Cpf">
+						<h:outputText value="#{usuario.cpf}" />
+					</p:column>
+
+					<p:column headerText="Tipo">
+						<h:outputText value="#{usuario.tipoFormatado}" />
+					</p:column>
+
+					<p:column headerText="Ações">
+						<p:commandButton icon="ui-icon-pencil"
+							actionListener="#{usuarioBean.capturarUsuario}"
+							oncomplete="PF('dialogoEditarCadastro').show();"
+							update=":mensagem :formEditarCadastro:painelEditarCadastro">
+							<f:actionListener
+								type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
+							<f:attribute name="usuarioSelecionado" value="#{usuario}" />
+						</p:commandButton>
+
+						<p:commandButton icon="ui-icon-trash"
+							actionListener="#{usuarioBean.excluir}"
+							update=":mensagem :formListagem:tabelaUsuario">
+							<p:confirm header="Confirmação"
+								message="Deseja excluir o usuario?" icon="ui-icon-alert" />
+							<f:attribute name="usuarioSelecionado" value="#{usuario}" />
+						</p:commandButton>
+
+					</p:column>
+
+				</p:dataTable>
+			</p:panel>
+		</h:form>
+		
+		<!-- DIÁLOGO CADASTRO DE USUÁRIO -->
+
+		<p:dialog header="Cadastro - Usuarios" widgetVar="dialogoCadastro"
+			modal="true" resizable="false" draggable="false" closable="false">
+			<h:form id="formCadastro">
+				<h:panelGrid id="painelCadastro" columns="2">
+
+					<h:outputText for="nome" value="Nome: " />
+					<p:inputText id="nome" value="#{usuarioBean.usuario.nome}"
+						required="true" requiredMessage="O campo NOME é obrigatório!"
+						size="25" maxlength="50" />
+
+					<h:outputText for="email" value="Email" />
+					<p:inputText id="email" value="#{usuarioBean.usuario.email}"
+						required="true" requiredMessage="O campo EMAIL é obrigatório"
+						size="25" maxlength="50" />
+
+					<h:outputText for="cpf" value="CPF" />
+					<p:inputMask id="cpf" value="#{usuarioBean.usuario.cpf}"
+						required="true" requiredMessage="O campo CPF é obrigatório"
+						size="15" maxlength="14" mask="999.999.999-99" />
+
+					<h:outputText for="senha" value="Senha: " />
+					<p:password id="senha"
+						value="#{usuarioBean.usuario.senhaNaoCriptografada}"
+						required="true" requiredMessage="O campo Senha é obrigatório"
+						size="35" maxlength="80" />
+
+					<h:outputText for="tipoUsuario" value="Tipo Usuario:" />
+					<p:selectOneButton id="tipoUsuario"
+						value="#{usuarioBean.usuario.tipo}">
+						<f:selectItem itemLabel="Master" itemValue="M" />
+						<f:selectItem itemLabel="Admin" itemValue="A" />
+						<f:selectItem itemLabel="Comum" itemValue="C" />
+					</p:selectOneButton>
+
+
+				</h:panelGrid>
+				<!--  PAINEL DOS BOTÕES DO DIALOGO -->
+
+				<h:panelGrid columns="2">
+					<p:commandButton value="Salvar"
+						actionListener="#{usuarioBean.salvar}"
+						update=":mensagem :formListagem:tabelaUsuario :formCadastro:painelCadastro" />
+					<p:commandButton value="Fechar"
+						oncomplete="PF('dialogoCadastro').hide();" />
+				</h:panelGrid>
+				<!--  FIM DO PAINEL DOS BOTÕES DO DIALOGO -->
+
+			</h:form>
+		</p:dialog>
+		<!-- FIM DO DIÁLOGO CADASTRO DE USUÁRIO -->
+		
+		
+		
+		<!-- DIÁLOGO PARA EDITAR CADASTRO DE USUÁRIO -->
+
+		<p:dialog header="Cadastro - Usuarios" widgetVar="dialogoEditarCadastro"
+			modal="true" resizable="false" draggable="false" closable="false">
+			<h:form id="formEditarCadastro">
+				<h:panelGrid id="painelEditarCadastro" columns="2">
+
+					<h:outputText for="nome" value="Nome: " />
+					<p:inputText id="nome" value="#{usuarioBean.usuario.nome}"
+						required="true" requiredMessage="O campo NOME é obrigatório!"
+						size="25" maxlength="50" />
+
+					<h:outputText for="email" value="Email" />
+					<p:inputText id="email" value="#{usuarioBean.usuario.email}"
+						required="true" requiredMessage="O campo EMAIL é obrigatório"
+						size="25" maxlength="50" />
+
+					<h:outputText for="cpf" value="CPF" />
+					<p:inputMask id="cpf" value="#{usuarioBean.usuario.cpf}"
+						required="true" requiredMessage="O campo CPF é obrigatório"
+						size="15" maxlength="14" mask="999.999.999-99" />
+
+					<h:outputText for="senha" value="Senha: " />
+					<p:password id="senha"
+						value="#{usuarioBean.usuario.senhaNaoCriptografada}"
+						required="true" requiredMessage="O campo Senha é obrigatório"
+						size="35" maxlength="32" />
+
+					<h:outputText for="tipoUsuario" value="Tipo Usuario:" />
+					<p:selectOneButton id="tipoUsuario"
+						value="#{usuarioBean.usuario.tipo}">
+						<f:selectItem itemLabel="Master" itemValue="M" />
+						<f:selectItem itemLabel="Admin" itemValue="A" />
+						<f:selectItem itemLabel="Comum" itemValue="C" />
+					</p:selectOneButton>
+
+
+				</h:panelGrid>
+				<!--  PAINEL DOS BOTÕES DO DIALOGO -->
+
+				<h:panelGrid columns="2">
+					<p:commandButton value="Salvar"
+						actionListener="#{usuarioBean.salvarEdicao}"
+						update=":mensagem :formListagem:tabelaUsuario :formEditarCadastro:painelEditarCadastro" />
+					<p:commandButton value="Fechar"
+						oncomplete="PF('dialogoEditarCadastro').hide();" />
+				</h:panelGrid>
+				<!--  FIM DO PAINEL DOS BOTÕES DO DIALOGO -->
+
+			</h:form>
+		</p:dialog>
+		<!-- FIM DO DIÁLOGO PARA EDITAR CADASTRO DE USUÁRIO -->
+		
+	</ui:define>
+
+</ui:composition>
